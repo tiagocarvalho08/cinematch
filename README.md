@@ -1,13 +1,14 @@
 # CineMatch · Recomendador de Filmes e Séries
 
-> **Acesse a aplicação:** https://SEU-USUARIO.github.io/cinematch/
-> *(troque `SEU-USUARIO` pelo usuário do GitHub depois de publicar no GitHub Pages; veja "Publicar no GitHub Pages" abaixo)*
+> **Acesse a aplicação:** [https://tiagocarvalho08.github.io/cinematch/](https://tiagocarvalho08.github.io/cinematch/)
+>
+> **Relatório (PDF):** [docs/relatorio-cinematch.pdf](docs/relatorio-cinematch.pdf)
 
 O CineMatch ajuda quem passa mais tempo procurando o que assistir do que assistindo. Você informa o **humor do momento**, o **tempo disponível**, os **gêneros favoritos** e a **faixa etária** de quem vai assistir, e o app sugere **3 filmes ou séries** compatíveis. Também mostra a que horas cada um termina se você começar agora.
 
 Projeto da disciplina **Desenvolvimento de Interfaces (HTML, CSS e JavaScript)**, desenvolvido com Vibe Coding (programação assistida por IA).
 
-**Grupo:** _[Nome 1]_, _[Nome 2]_, _[Nome 3]_, _[Nome 4]_
+**Autor:** Tiago Carvalho (trabalho individual)
 
 ---
 
@@ -74,7 +75,7 @@ e acesse `http://localhost:5173`.
 
 1. Crie um repositório público chamado `cinematch` e envie estes arquivos (o `index.html` deve ficar na raiz).
 2. No GitHub, abra **Settings → Pages**, escolha **Deploy from a branch**, depois a branch `main` e a pasta `/ (root)`, e salve.
-3. Em 1 ou 2 minutos o site sai em `https://SEU-USUARIO.github.io/cinematch/`. Coloque esse link no topo deste README.
+3. Em 1 ou 2 minutos o site sai em `https://tiagocarvalho08.github.io/cinematch/` (link no topo deste README).
 
 ## Tecnologias
 
@@ -84,5 +85,5 @@ HTML5, CSS3 (custom properties, grid, `@media`, `prefers-reduced-motion`), JavaS
 
 ## Observações
 
-- Notas do público, durações e classificações são **dados de exemplo** aproximados, montados para o projeto acadêmico. As sinopses foram escritas pelo grupo.
+- Notas do público, durações e classificações são **dados de exemplo** aproximados, montados para o projeto acadêmico. As sinopses foram escritas para o projeto.
 - Os **pôsteres** vêm da Wikipédia (upload.wikimedia.org), usados com fins educacionais e creditados no rodapé. Os endereços estão em `js/movies.js` (objeto `POSTERS`). Séries que só têm logo na Wikipédia aparecem com o logo sobre um fundo escuro, e 3 títulos sem imagem usam um pôster tipográfico. Se uma imagem não carregar, o pôster tipográfico entra no lugar.

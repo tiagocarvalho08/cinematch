@@ -236,7 +236,8 @@ h1:focus { outline: none; }
   /* 340 (formulário) + 28 (vão) + resto (resultados) */
   display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 28px; align-items: start;
 }
-.preferencias { display: grid; gap: 22px; }
+.preferencias { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.preferencias > * { min-width: 0; }
 .preferencias fieldset { border: 0; min-width: 0; }
 .preferencias legend, .campo label, .novo-perfil label {
   display: block; font-weight: 600; font-size: 14px; margin-bottom: 10px; padding: 0;
@@ -245,7 +246,7 @@ h1:focus { outline: none; }
 .generos summary {
   display: flex; align-items: center; gap: 6px; min-height: 42px; padding: 0 16px;
   border-radius: 12px; background: var(--raised); cursor: pointer; list-style: none;
-  font-weight: 600; font-size: 14px;
+  font-weight: 600; font-size: 14px; white-space: nowrap;
 }
 .generos summary::-webkit-details-marker { display: none; }
 .generos summary::after {
@@ -334,8 +335,8 @@ h1:focus { outline: none; }
 .rec-destaque .rec-titulo { font-size: 30px; line-height: 34px; letter-spacing: -0.03em; }
 .fatos { display: flex; flex-wrap: wrap; gap: 6px; }
 .fatos li {
-  display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 11px;
-  border-radius: var(--radius-control); background: var(--raised); font-size: 13px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 5px 11px;
+  border-radius: 14px; background: var(--raised); font-size: 13px; line-height: 18px; font-weight: 600;
 }
 .rec-destaque .fatos li { background: var(--ground); }
 :root[data-theme="claro"] .rec-destaque .fatos li { background: var(--surface); }
@@ -678,7 +679,6 @@ kbd { font: inherit; font-size: 12px; background: var(--raised); border-radius: 
   .preferencias > fieldset:nth-of-type(3) { grid-area: tempo; }
   .preferencias .campo { grid-area: faixa; }
   .preferencias .generos { grid-area: generos; }
-  .generos summary { white-space: nowrap; }
   .preferencias .acoes-form { grid-area: acoes; }
   .acoes-form { grid-template-columns: repeat(2, max-content); }
   .recs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
