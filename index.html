@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="escuro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CineMatch · O que assistir agora</title>
+  <meta name="description" content="CineMatch sugere filmes e séries pelo seu humor, pelo tempo que você tem e pelos gêneros de que gosta.">
+  <meta name="theme-color" content="#0d0a0b">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+  <!-- Aplica o tema salvo antes de desenhar a página (evita piscar). O padrão é o escuro. -->
+  <script>
+    (function () {
+      var tema = null;
+      try { tema = JSON.parse(localStorage.getItem("cinematch:tema")); } catch (e) {}
+      document.documentElement.setAttribute("data-theme", tema === "claro" ? "claro" : "escuro");
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://upload.wikimedia.org">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Ícones (contorno, 1,5 px) reutilizados com <use> -->
+  <svg width="0" height="0" class="sprite" aria-hidden="true">
+    <symbol id="i-descobrir" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+    <symbol id="i-catalogo" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></symbol>
+    <symbol id="i-coracao" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+    <symbol id="i-historico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-estatisticas" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-lua" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+    <symbol id="i-ajuda" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></symbol>
+    <symbol id="i-dado" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><g fill="currentColor" stroke="none"><circle cx="9" cy="9" r="1.3"/><circle cx="15" cy="15" r="1.3"/><circle cx="15" cy="9" r="1.3"/><circle cx="9" cy="15" r="1.3"/><circle cx="12" cy="12" r="1.3"/></g></symbol>
+    <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-estrela" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+    <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5h4"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></symbol>
+  </svg>
+
+  <div class="app">
+    <!-- ============ Barra lateral (no celular vira barra inferior) ============ -->
+    <aside class="lateral" aria-label="Navegação principal">
+      <a class="marca" href="#descobrir" aria-label="CineMatch, ir para Descobrir">
+        <img src="assets/images/logo.svg" alt="" width="30" height="30">
+        <span>CineMatch</span>
+      </a>
+      <nav>
+        <ul class="nav">
+          <li><a href="#descobrir" data-rota="descobrir"><svg class="ico" aria-hidden="true"><use href="#i-descobrir"/></svg><span>Descobrir</span></a></li>
+          <li><a href="#catalogo" data-rota="catalogo"><svg class="ico" aria-hidden="true"><use href="#i-catalogo"/></svg><span>Catálogo</span></a></li>
+          <li><a href="#favoritos" data-rota="favoritos"><svg class="ico" aria-hidden="true"><use href="#i-coracao"/></svg><span>Favoritos</span><span class="nav-conta num" id="conta-favoritos"></span></a></li>
+          <li><a href="#historico" data-rota="historico"><svg class="ico" aria-hidden="true"><use href="#i-historico"/></svg><span>Histórico</span></a></li>
+          <li><a href="#estatisticas" data-rota="estatisticas"><svg class="ico" aria-hidden="true"><use href="#i-estatisticas"/></svg><span>Estatísticas</span></a></li>
+        </ul>
+      </nav>
+      <button class="lateral-ajuda" type="button" data-abrir="dialogo-ajuda">
+        <svg class="ico" aria-hidden="true"><use href="#i-ajuda"/></svg>Como funciona
+      </button>
+    </aside>
+
+    <!-- ============ Barra superior ============ -->
+    <header class="topo">
+      <a class="marca marca-celular" href="#descobrir" aria-label="CineMatch, ir para Descobrir">
+        <img src="assets/images/logo.svg" alt="" width="26" height="26">
+        <span>CineMatch</span>
+      </a>
+      <form class="busca-topo" role="search" id="form-busca-topo">
+        <label class="visualmente-oculto" for="busca-topo">Buscar no catálogo</label>
+        <svg class="ico" aria-hidden="true"><use href="#i-busca"/></svg>
+        <input id="busca-topo" type="search" placeholder="Buscar filme ou série" autocomplete="off">
+        <kbd class="atalho" aria-hidden="true">/</kbd>
+      </form>
+      <div class="topo-acoes">
+        <button class="botao-icone" type="button" id="botao-tema" aria-label="Mudar para o tema claro">
+          <svg class="ico ico-sol" aria-hidden="true"><use href="#i-sol"/></svg>
+          <svg class="ico ico-lua" aria-hidden="true"><use href="#i-lua"/></svg>
+        </button>
+        <button class="botao-icone so-celular" type="button" data-abrir="dialogo-ajuda" aria-label="Como funciona">
+          <svg class="ico" aria-hidden="true"><use href="#i-ajuda"/></svg>
+        </button>
+        <span class="divisor" aria-hidden="true"></span>
+        <button class="perfil-botao" type="button" id="botao-perfil" data-abrir="dialogo-perfis" aria-haspopup="dialog">
+          <span class="avatar" id="avatar-perfil" aria-hidden="true"></span>
+          <span class="perfil-nome" id="nome-perfil"></span>
+          <span class="visualmente-oculto">(trocar perfil)</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ Conteúdo: uma seção por tela ============ -->
+    <main id="conteudo" class="conteudo" tabindex="-1">
+
+      <!-- ---------- Descobrir (RF01 + RF02) ---------- -->
+      <section class="tela" id="tela-descobrir" aria-labelledby="t-descobrir">
+        <div class="titulo-linha">
+          <div>
+            <h1 id="t-descobrir">O que assistir agora?</h1>
+            <p class="subtitulo" id="sub-descobrir">Diga como você está e quanto tempo tem.</p>
+          </div>
+        </div>
+
+        <div class="descobrir-grade">
+          <form class="painel preferencias" id="form-preferencias" novalidate>
+            <h2 class="painel-titulo">Suas preferências</h2>
+
+            <fieldset>
+              <legend>O que você quer ver?</legend>
+              <div class="segmentado" id="campo-tipo"></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Como você está?</legend>
+              <div class="fichas" id="campo-humor"></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Quanto tempo você tem?</legend>
+              <div class="fichas" id="campo-tempo"></div>
+            </fieldset>
+
+            <details class="generos" id="bloco-generos">
+              <summary>Gêneros favoritos <span class="opcional" id="resumo-generos">opcional</span></summary>
+              <fieldset>
+                <legend class="visualmente-oculto">Gêneros favoritos</legend>
+                <div class="fichas" id="campo-generos"></div>
+              </fieldset>
+            </details>
+
+            <div class="campo">
+              <label for="campo-faixa">Quem vai assistir</label>
+              <select id="campo-faixa" class="controle"></select>
+            </div>
+
+            <div class="acoes-form">
+              <button class="botao botao-primario" type="submit">
+                <svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>Gerar recomendações
+              </button>
+              <button class="botao botao-secundario" type="button" id="botao-surpresa">
+                <svg class="ico" aria-hidden="true"><use href="#i-dado"/></svg>Me surpreenda
+              </button>
+            </div>
+          </form>
+
+          <section class="resultados" aria-labelledby="t-resultados">
+            <div class="painel-cabecalho">
+              <h2 id="t-resultados">Para você agora</h2>
+              <p class="painel-meta" id="meta-resultados"></p>
+            </div>
+            <div id="area-resultados" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ---------- Catálogo (busca) ---------- -->
+      <section class="tela" id="tela-catalogo" aria-labelledby="t-catalogo" hidden>
+        <div class="titulo-linha">
+          <div>
+            <h1 id="t-catalogo">Catálogo</h1>
+            <p class="subtitulo" id="sub-catalogo"></p>
+          </div>
+        </div>
+
+        <div class="barra-ferramentas">
+          <div class="abas" role="tablist" aria-label="Tipo de título" id="abas-catalogo"></div>
+          <div class="busca-campo">
+            <label class="visualmente-oculto" for="busca-catalogo">Buscar por título, gênero ou sinopse</label>
+            <svg class="ico" aria-hidden="true"><use href="#i-busca"/></svg>
+            <input id="busca-catalogo" type="search" placeholder="Título, gênero ou palavra da sinopse" autocomplete="off">
+          </div>
+          <div class="ferramentas-direita">
+            <label class="visualmente-oculto" for="filtro-genero">Filtrar por gênero</label>
+            <select id="filtro-genero" class="controle"></select>
+            <label class="visualmente-oculto" for="ordem-catalogo">Ordenar</label>
+            <select id="ordem-catalogo" class="controle">
+              <option value="nota">Maior nota</option>
+              <option value="titulo">Título (A–Z)</option>
+              <option value="recentes">Mais recentes</option>
+              <option value="curtos">Mais curtos</option>
+            </select>
+          </div>
+        </div>
+
+        <ul class="grade-cartazes" id="grade-catalogo" aria-label="Títulos do catálogo"></ul>
+        <div id="vazio-catalogo"></div>
+      </section>
+
+      <!-- ---------- Favoritos (RF03 + RF04) ---------- -->
+      <section class="tela" id="tela-favoritos" aria-labelledby="t-favoritos" hidden>
+        <div class="titulo-linha">
+          <div>
+            <h1 id="t-favoritos">Favoritos</h1>
+            <p class="subtitulo" id="sub-favoritos"></p>
+          </div>
+          <label class="ordem-favoritos">
+            <span class="visualmente-oculto">Ordenar favoritos</span>
+            <select id="ordem-favoritos" class="controle">
+              <option value="recentes">Adicionados por último</option>
+              <option value="estrelas">Sua avaliação</option>
+              <option value="titulo">Título (A–Z)</option>
+            </select>
+          </label>
+        </div>
+        <ul class="grade-cartazes grade-favoritos" id="lista-favoritos" aria-label="Seus favoritos"></ul>
+      </section>
+
+      <!-- ---------- Histórico (RF05) ---------- -->
+      <section class="tela" id="tela-historico" aria-labelledby="t-historico" hidden>
+        <div class="titulo-linha">
+          <div>
+            <h1 id="t-historico">Histórico</h1>
+            <p class="subtitulo" id="sub-historico"></p>
+          </div>
+          <button class="botao botao-secundario" type="button" id="botao-limpar-historico">Limpar histórico</button>
+        </div>
+        <div id="lista-historico" class="lista-historico"></div>
+      </section>
+
+      <!-- ---------- Estatísticas ---------- -->
+      <section class="tela" id="tela-estatisticas" aria-labelledby="t-estatisticas" hidden>
+        <div class="titulo-linha">
+          <div>
+            <h1 id="t-estatisticas">Estatísticas</h1>
+            <p class="subtitulo" id="sub-estatisticas"></p>
+          </div>
+        </div>
+        <dl class="kpis num" id="kpis"></dl>
+        <div class="estat-grade">
+          <section class="painel" aria-labelledby="t-est-generos">
+            <div class="painel-cabecalho"><h2 id="t-est-generos">Gêneros nos favoritos</h2><p class="painel-meta" id="meta-est-generos"></p></div>
+            <div id="est-generos"></div>
+          </section>
+          <section class="painel" aria-labelledby="t-est-humores">
+            <div class="painel-cabecalho"><h2 id="t-est-humores">Como você costuma assistir</h2><p class="painel-meta" id="meta-est-humores"></p></div>
+            <div id="est-humores"></div>
+          </section>
+          <section class="painel painel-largo" aria-labelledby="t-est-dias">
+            <div class="painel-cabecalho"><h2 id="t-est-dias">Recomendações nos últimos 7 dias</h2><p class="painel-meta" id="meta-est-dias"></p></div>
+            <div id="est-dias"></div>
+          </section>
+          <section class="painel" aria-labelledby="t-est-top">
+            <div class="painel-cabecalho"><h2 id="t-est-top">Suas notas mais altas</h2></div>
+            <div id="est-top"></div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="rodape">
+        <p>CineMatch · projeto acadêmico de Desenvolvimento de Interfaces. Pôsteres: Wikipédia / Wikimedia, uso educacional. Notas e durações são dados de exemplo.</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ============ Diálogos ============ -->
+  <dialog class="dialogo dialogo-detalhes" id="dialogo-detalhes" aria-labelledby="det-titulo">
+    <div id="conteudo-detalhes"></div>
+  </dialog>
+
+  <dialog class="dialogo dialogo-estreito" id="dialogo-perfis" aria-labelledby="perfis-titulo">
+    <div class="dialogo-cabecalho">
+      <h2 id="perfis-titulo">Perfis</h2>
+      <button class="botao-icone" type="button" data-fechar aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-fechar"/></svg></button>
+    </div>
+    <p class="dialogo-texto">Cada perfil guarda os próprios favoritos, notas e histórico neste navegador.</p>
+    <ul class="lista-perfis" id="lista-perfis"></ul>
+    <form class="novo-perfil" id="form-novo-perfil">
+      <label for="nome-novo-perfil">Novo perfil</label>
+      <div class="entrada-acao">
+        <input id="nome-novo-perfil" type="text" maxlength="24" placeholder="Nome, por exemplo Ana" required>
+        <button class="botao botao-secundario" type="submit">Criar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialogo dialogo-estreito" id="dialogo-confirmar" aria-labelledby="confirmar-titulo">
+    <h2 id="confirmar-titulo"></h2>
+    <p class="dialogo-texto" id="confirmar-texto"></p>
+    <div class="dialogo-acoes">
+      <button class="botao botao-secundario" type="button" data-fechar>Cancelar</button>
+      <button class="botao botao-primario" type="button" id="confirmar-ok">Confirmar</button>
+    </div>
+  </dialog>
+
+  <dialog class="dialogo" id="dialogo-ajuda" aria-labelledby="ajuda-titulo">
+    <div class="dialogo-cabecalho">
+      <h2 id="ajuda-titulo">Como o CineMatch escolhe</h2>
+      <button class="botao-icone" type="button" data-fechar aria-label="Fechar"><svg class="ico" aria-hidden="true"><use href="#i-fechar"/></svg></button>
+    </div>
+    <ol class="ajuda-passos">
+      <li><strong>Filtra</strong> o que não serve: classificação acima da faixa etária, o tipo que você não pediu e filmes mais longos que o seu tempo (nas séries, conta um episódio).</li>
+      <li><strong>Pontua</strong> o resto: gêneros em comum valem 40%, o humor 30% e a nota do público 30%. Isso vira a porcentagem de compatibilidade.</li>
+      <li><strong>Varia</strong>: títulos sugeridos nas duas últimas vezes perdem pontos, então gerar de novo traz opções diferentes.</li>
+      <li><strong>Me surpreenda</strong> sorteia um título entre os compatíveis.</li>
+    </ol>
+    <h3>Atalhos</h3>
+    <ul class="ajuda-atalhos">
+      <li><kbd>/</kbd> busca no catálogo</li>
+      <li><kbd>Esc</kbd> fecha janelas</li>
+    </ul>
+    <p class="dialogo-texto">Tudo fica salvo só neste navegador (LocalStorage). Notas e durações são dados de exemplo; pôsteres vêm da Wikipédia.</p>
+  </dialog>
+
+  <div class="aviso-flutuante" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="sem-js">O CineMatch precisa de JavaScript ligado para recomendar títulos.</p></noscript>
+
+  <script src="js/storage.js"></script>
+  <script src="js/movies.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
